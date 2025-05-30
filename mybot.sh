@@ -2,7 +2,7 @@ sudo apt update
 sudo apt install -y python3-pip docker.io
 
 echo "Writing Dockerfile..."
-cat <<EOF > Dockerfile
+cat <<EOF > Dockerfile1
 FROM ubuntu:22.04
 
 RUN apt update
@@ -11,7 +11,7 @@ EOF
 
 echo Made successfully - Building Docker image.
 echo "Building Docker Image"
-sudo docker build -t ubuntu-22.04-with-tmate .
+sudo docker  build -t ubuntu-22.04-with-tmate -f Dockerfile1 . && docker build -t debian-with-tmate -f Dockerfile2 .
 echo Built successfully
 echo "Downloading main.py from the GitHub repository..."
 wget -o https://raw.githubusercontent.com/noimc/discord-vps-creator/refs/heads/main/v3ds
