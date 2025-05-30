@@ -9,6 +9,22 @@ RUN apt update
 RUN apt install -y tmate
 EOF
 
+cat <<EOF > Dockerfile2
+FROM debian:12
+
+
+RUN apt-get update && \
+    apt-get install -y tmate && \
+    echo 'root:root' | chpasswd && \
+    printf '#!/bin/sh\nexit 0' > /usr/sbin/policy-rc.d && \
+    apt-get install -y systemd systemd-sysv dbus dbus-user-session && \
+    printf "systemctl start systemd-logind" >> /etc/profile
+
+
+CMD ["bash"]
+ENTRYPOINT ["/sbin/init"]
+EOF
+
 echo Made successfully - Building Docker image.
 echo "Building Docker Image"
 sudo docker  build -t ubuntu-22.04-with-tmate -f Dockerfile1 . && docker build -t debian-with-tmate -f Dockerfile2 .
